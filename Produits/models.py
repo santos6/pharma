@@ -3,6 +3,9 @@ from django.db import models
 
 class Categories(models.Model):
     name= models.CharField(max_length=250)
+    def __str__(self):
+        return self.name
+    
 # Class pour les produits
 
 class Produits(models.Model):
@@ -29,9 +32,14 @@ class Produits(models.Model):
         
         else:
             return 'green'
+    def __str__(self):
+        return self.name
         
 class Customer(models.Model):
     name= models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+    
 
 class Vente(models.Model):
     produit= models.ForeignKey(Produits, on_delete= models.CASCADE)
