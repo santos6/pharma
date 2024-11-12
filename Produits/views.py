@@ -22,4 +22,5 @@ class Affichage(ListView):
     #Récupération des données
     queryset = Produits.objects.all()
     
- 
+def ajout_donnees(request):
+    return render(request,"ajout-donnees.html")
