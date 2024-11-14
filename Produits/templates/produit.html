@@ -1,29 +1,42 @@
-<style>
-  .button {
-    padding: 5px 30px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-align: center;
-    color: white;
-  }
 
-  .red{
-    background-color: red;
-  }
+{% if messages %}
+<ul class="messages">
+   {% for message in messages %}
+       <li {% if message.tags %} class="{ message.tags }" {% endif %} style="color:green;">
+           {{message}}
+       </li>
+   {% endfor %}
+</ul>
+{% endif %}
 
-  .orange{
-    background-color: orange;
-  }
-
-  .green{
-    background-color: green;
-  }
-
-</style>
-
-<!-- Fin du style css-->
 
 <div class="products-area-wrapper tableView">
+    <style>
+      .button {
+        padding: 5px 30px;
+        border-radius: 5px;
+        font-weight: bold;
+        text-align: center;
+        color: white;
+      }
+
+      .red{
+        background-color: red;
+      }
+
+      .orange{
+        background-color: orange;
+      }
+
+      .green{
+        background-color: green;
+      }
+
+    </style>
+    <!-- Fin du style css-->
+
+    <!-- Titre du tableau -->
+
     <div class="products-header">
       <div class="product-cell image">
         Items
