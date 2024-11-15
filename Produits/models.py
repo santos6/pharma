@@ -7,7 +7,7 @@ class Categories(models.Model):
         return self.name
     
 # Class pour les produits
-
+#image= models.ImageField(null=True, blank=True,upload_to='media/')
 class Produits(models.Model):
     name = models.CharField(max_length= 100 )
     category= models.ForeignKey(Categories, on_delete=models.CASCADE)
@@ -16,6 +16,7 @@ class Produits(models.Model):
     description= models.TextField()
     date_ajout= models.DateTimeField(auto_now_add=True)
     date_expiration= models.DateField()
+    #image= models.ImageField(upload_to='media/')
     image= models.ImageField(null=True, blank=True,upload_to='media/')
 
     class Meta:
