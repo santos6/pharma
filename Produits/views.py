@@ -36,7 +36,7 @@ class AjoutProduits(CreateView):
     #Specifier le formulaire à utiliser 
     form_class = AjoutProduit
     #Affichage du template
-    template_name = 'ajout.html'
+    template_name = 'ajout-donnees.html'
     #redirection après enregistrement
     success_url = reverse_lazy('home')
 

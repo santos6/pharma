@@ -110,92 +110,129 @@
         <div class="row d-flex justify-content-center">
             <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
                 <h3>Ajout des produits</h3>
-                <p class="blue-text">Veuillez noté que<br> tous les champs sont obligatoires
-                </p>
+                <!--<p class="blue-text">Veuillez noté que<br> tous les champs sont obligatoires </p> -->
                 <div class="card">
-                    <h5 class="text-center mb-4">Powering world-class companies</h5>
-                    <form class="form-card"  method="POST" enctype="multipart/form-data">
+                    <h5 class="text-center mb-4">Pharmacie projet</h5>
+                    <form class="form-card" method="POST" enctype="multipart/form-data">
                         <!--Gestion de la sécurité contre les attaque de type CSRF-->
-                       
+
                         {% csrf_token %}
 
                         {% if messages %}
-                             <ul class="messages">
-                                {% for message in messages %}
-                                    <li {% if message.tags %} class="{message.tags}" {% endif %} style="color:red;">
-                                        {{message}}
-                                    </li>
-                                {% endfor %}
-                             </ul>
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{message.tags}" {% endif %} style="color:red;">
+                                {{message}}
+                            </li>
+                            {% endfor %}
+                        </ul>
                         {% endif %}
 
                         <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex"> 
-                                <label class="form-control-label px-3">Le nom du produit<span class="text-danger">*</span></label> 
-                                <input type="text" id="name" name="name" placeholder="Entez le nom du produit" onblur="validate(1)" required>
-                               
-                               
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Le nom du produit<span class="text-danger">*</span></label>
+
+                                {{form.name}}
+                                <div class="text-danger"> {{form.name.errors}}</div>
+                              {% comment %} <input type="text" id="name" name="name"
+                                    placeholder="Entez le nom du produit" onblur="validate(1)" required>  {% endcomment %}
+
                             </div>
 
-                            <div class="form-group col-sm-6 flex-column d-flex"> 
-                                <label class="form-control-label px-3">Sélectionné la catégorie<span class="text-danger"> *</span></label>
-                                    <select name="category" id="category" required>
-                                        {% for category  in category %}
-                                            <option value="{{category.pk}}">{{category.name}}</option>
-                                        {% endfor %}
-                                    </select>
-                                    {{errors.category} }
-                                        <div class="errors" style="color: red;">
-                                            <p>{{error.category}}</p>
-                                        </div>
-                                        
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Sélectionné la catégorie<span
+                                        class="text-danger"> *</span></label>
+
+                                        {{form.category}}
+                                        <div class="text-danger"> {{form.category.errors}}</div>
+
+                                {% comment %} <select name="category" id="category" required>
+                                    {% for category in category %}
+                                    <option value="{{category.pk}}">{{category.name}}</option>
+                                    {% endfor %}
+                                </select> {% endcomment %}
+
+                                {% comment %} {% errors.category %} {% endcomment %}
+                                <div class="errors" style="color: red;">
+                                    <p>{{error.category}}</p>
+                                </div>
+
                             </div>
                         </div>
                         <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex"> 
-                                <label class="form-control-label px-3">Le prix du produit<span class="text-danger">*</span></label> 
-                                    <input type="text" id="price" name="price" placeholder="Entrez le prix du produit" onblur="validate(3)" required> 
-                                    {{error.price}}
-                                        <div class="errors" style="color: red;">
-                                            <p>{{error.price}}</p>
-                                        </div>
-                        
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Le prix du produit<span class="text-danger">*</span></label>
+
+                                    {{form.price}}
+                                    <div class="text-danger"> {{form.price.errors}}</div>
+
+                                     {% comment %} <input type="text" id="price" name="price" 
+                                    placeholder="Entrez le prix du produit" onblur="validate(3)" required> {% endcomment %}
+
+                                {{error.price}}
+                                <div class="errors" style="color: red;">
+                                    <p>{{error.price}}</p>
+                                </div>
+
                             </div>
 
-                            <div class="form-group col-sm-6 flex-column d-flex"> 
-                                <label class="form-control-label px-3">La quantite de produit <span class="text-danger">*</span></label> 
-                                <input type="text" id="quantite" name="quantite" placeholder="Entez la quantité" onblur="validate(4)" required> 
-                                
-                                
-                            </div>
-                        </div>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">La quantite de produit <span class="text-danger">*</span></label>
 
-                        <div class="row justify-content-between text-left">
-                            <div class="form-group col-sm-6 flex-column d-flex"> 
-                                <label class="form-control-label px-3">date expiration<span class="text-danger"> *</span></label>
-                                <input type="date" id="date_expiration" name="date_expiration" placeholder="Entrez la date d'expiration" onblur="validate(5)" required>
-                                
-                            </div>
+                                {{form.quantite}}
+                                <div class="text-danger"> {{form.quantite.errors}}</div>
 
-                            <div class="form-group col-sm-6 flex-column d-flex"> 
-                                <label class="form-control-label px-3">Image du produit <span class="text-danger"> *</span></label>
-                                <input type="file" id="image" name="image"  onblur="validate(5)" >
-                                
+                                {% comment %} <input type="text" id="quantite" name="quantite"
+                                    placeholder="Entez la quantité" onblur="validate(4)" required> {% endcomment %}
+
+
                             </div>
                         </div>
 
                         <div class="row justify-content-between text-left">
-                            <div class="form-group col-12 flex-column d-flex"> <label
-                                    class="form-control-label px-3">La description du produit<span
-                                        class="text-danger"> *</span></label> <input type="text" id="description" name="description"
-                                    placeholder="Entrez une description" onblur="validate(6)" required> </div>
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">date expiration<span class="text-danger">*</span></label>
+
+                                {{form.date_expiration}}
+                                <div class="text-danger"> {{form.date_expiration.errors}}</div>
+
+                                 {% comment %} <input type="date" id="date_expiration" name="date_expiration"
+                                    placeholder="Entrez la date d'expiration" onblur="validate(5)" required>  {% endcomment %}
+                                    
+
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Image du produit <span class="text-danger">
+                                        *</span></label>
+                                {% comment %} <input type="file" id="image" name="image" onblur="validate(5)">  {% endcomment %}
+
+                                {{form.image}}
+                                <div class="text-danger"> {{form.image.errors}}</div>       
+
+                            </div>
                         </div>
+
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-12 flex-column d-flex">
+                                <label class="form-control-label px-3">La description du produit<span class="text-danger"> *</span></label>
+
+                                {{form.description}}
+                                <div class="text-danger"> {{form.description.errors}}</div>
+
+                                {% comment %} <input type="text" id="description" name="description"
+                                    placeholder="Entrez une description" onblur="validate(6)" required> {% endcomment %}
+
+                            </div> 
+                        </div>
+
+
                         <div class="row justify-content-end">
-                            <div class="form-group col-sm-6"> 
-                               <!-- <button type="submit" >Enregistrer</button> -->
-                                <input type="submit" class="btn-block btn-primary" value="Enregistrer">
+                            <div class="form-group col-sm-6">
+                                 <input type="submit" class="btn-block btn-primary" value="Enregistrer"> 
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>
