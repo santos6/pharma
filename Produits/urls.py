@@ -7,6 +7,7 @@ urlpatterns = [
    #path('',home,name='home'),
    path('',Affichage.as_view(), name='home'),
    path('ajout/',AjoutProduits.as_view(), name='ajout'),
+   path('modification/<int:id>/',modifier,name='modifier'),
  #  path('ajout/',ajout_donnees, name='ajout')
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,321 @@
+{% load static %}
+<!doctype html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Ajout des données</title>
+
+    <!-- 
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static '' %}">
+    -->
+    <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel='stylesheet'>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css' rel='stylesheet'>
+    <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        body {
+            color: #000;
+            overflow-x: hidden;
+            height: 100%;
+            background-image: url("https://i.imgur.com/GMmCQHC.png");
+            background-repeat: no-repeat;
+            background-size: 100% 100%
+        }
+
+        .card {
+            padding: 30px 40px;
+            margin-top: 60px;
+            margin-bottom: 60px;
+            border: none !important;
+            box-shadow: 0 6px 12px 0 rgba(0, 0, 0, 0.2)
+        }
+
+        .blue-text {
+            color: #00BCD4
+        }
+
+        .form-control-label {
+            margin-bottom: 0
+        }
+
+        input,
+        textarea,
+        button {
+            padding: 8px 15px;
+            border-radius: 5px !important;
+            margin: 5px 0px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            font-size: 18px !important;
+            font-weight: 300
+        }
+
+        input:focus,
+        textarea:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            border: 1px solid #00BCD4;
+            outline-width: 0;
+            font-weight: 400
+        }
+
+        .btn-block {
+            text-transform: uppercase;
+            font-size: 15px !important;
+            font-weight: 400;
+            height: 43px;
+            cursor: pointer
+        }
+
+        .btn-block:hover {
+            color: #fff !important
+        }
+
+        button:focus {
+            -moz-box-shadow: none !important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+            outline-width: 0
+        }
+    </style>
+</head>
+
+<body className='snippet-body'>
+
+    <div class="container-fluid px-1 py-5 mx-auto">
+        <div class="row d-flex justify-content-center">
+            <div class="col-xl-7 col-lg-8 col-md-9 col-11 text-center">
+                <h3>Modification des produits</h3>
+                
+                <div class="card">
+                    <h5 class="text-center mb-4">Pharmacie projet</h5>
+                    <form class="form-card" method="POST" enctype="multipart/form-data">
+                        <!--Gestion de la sécurité contre les attaque de type CSRF-->
+                        {% csrf_token %}
+
+                        {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                            <li {% if message.tags %} class="{message.tags}" {% endif %} style="color:red;">
+                                {{message}}
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Le nom du produit<span class="text-danger">*</span></label>
+                                
+                                <input type="text" id="name" name="name" value="{{produit.name}}" placeholder="Entez le nom du produit" onblur="validate(1)" required>  
+        
+                            </div>    
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Sélectionné la catégorie<span
+                                        class="text-danger"> *</span></label>
+
+                                 <select name="category" id="category" required>
+                                        {% for categorie in categories %}
+                                        <option value="{{categorie.pk}}"  
+                                        {% if categorie.pk == produit.category.pk %}
+                                        {% endif %}>
+                                        {{categorie.name}}</option>
+                                        {% endfor %}
+                                </select> 
+
+                                {% comment %} {% errors.category %} {% endcomment %}
+                                <div class="errors" style="color: red;">
+                                    <p>{{error.category}}</p>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Le prix du produit<span class="text-danger">*</span></label>
+
+                                      <input type="text" id="price" name="price" value="{{produit.price}}" placeholder="Entrez le prix du produit" onblur="validate(3)" required> 
+                                {% if errors.price %}
+                                    <div class="errors" style="color: red;">{{error.price}}</div>
+                                {% endif %}
+                            </div>
+
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">La quantite de produit <span class="text-danger">*</span></label>
+                                <input type="text" id="quantite" name="quantite" value="{{produit.quantite}}"
+                                    placeholder="Entez la quantité" onblur="validate(4)" required> 
+                            </div>
+                        </div>
+
+
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">date expiration<span class="text-danger">*</span></label>
+
+
+                                  <input type="date" id="date_expiration" name="date_expiration"
+                                    placeholder="Entrez la date d'expiration" onblur="validate(5)" required>  
+                                    
+
+                            </div>
+
+                            <div class="form-group col-sm-6 flex-column d-flex">
+                                <label class="form-control-label px-3">Image du produit <span class="text-danger">*</span></label>
+                                <input type="file" id="image" name="image" onblur="validate(5)" placeholder="Sélectionné une image">
+                                {% if produit.image %}
+                                    <img src="{{ produit.image.url }}" alt="Image actuelle" style="max-width: 100px; max-height: 100px;">
+                                {% endif %}
+                                {% if errors.image %}
+                                    <div class="error" style="color: red;">{{ errors.image }}</div>
+                                {% endif %}
+                                    <div class="error" style="color: red;"> {{ errors.image }}</div>       
+
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-between text-left">
+                            <div class="form-group col-12 flex-column d-flex">
+                                <label class="form-control-label px-3">La description du produit<span class="text-danger"> *</span></label>
+
+                               
+
+                                <input type="text" value="{{produit.description}}" id="description" name="description" placeholder="Entrez une description" onblur="validate(6)" required> 
+                                {% if errors.description %}
+                                <div class="error" style="color: red;">{{ errors.description }}</div>
+                                {% endif %}
+                            </div> 
+                        </div>
+
+
+                        <div class="row justify-content-end">
+                            <div class="form-group col-sm-6">
+                                 <input type="submit" class="btn-block btn-primary" value="Enregistrer"> 
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type='text/javascript'
+        src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js'></script>
+    <script type='text/javascript' src='#'></script>
+    <script type='text/javascript' src='#'></script>
+    <script type='text/javascript' src='#'></script>
+    <script type='text/javascript'>function validate(val) {
+            v1 = document.getElementById("fname");
+            v2 = document.getElementById("lname");
+            v3 = document.getElementById("email");
+            v4 = document.getElementById("mob");
+            v5 = document.getElementById("job");
+            v6 = document.getElementById("ans");
+
+            flag1 = true;
+            flag2 = true;
+            flag3 = true;
+            flag4 = true;
+            flag5 = true;
+            flag6 = true;
+
+            if (val >= 1 || val == 0) {
+                if (v1.value == "") {
+                    v1.style.borderColor = "red";
+                    flag1 = false;
+                }
+                else {
+                    v1.style.borderColor = "green";
+                    flag1 = true;
+                }
+            }
+
+            if (val >= 2 || val == 0) {
+                if (v2.value == "") {
+                    v2.style.borderColor = "red";
+                    flag2 = false;
+                }
+                else {
+                    v2.style.borderColor = "green";
+                    flag2 = true;
+                }
+            }
+            if (val >= 3 || val == 0) {
+                if (v3.value == "") {
+                    v3.style.borderColor = "red";
+                    flag3 = false;
+                }
+                else {
+                    v3.style.borderColor = "green";
+                    flag3 = true;
+                }
+            }
+            if (val >= 4 || val == 0) {
+                if (v4.value == "") {
+                    v4.style.borderColor = "red";
+                    flag4 = false;
+                }
+                else {
+                    v4.style.borderColor = "green";
+                    flag4 = true;
+                }
+            }
+            if (val >= 5 || val == 0) {
+                if (v5.value == "") {
+                    v5.style.borderColor = "red";
+                    flag5 = false;
+                }
+                else {
+                    v5.style.borderColor = "green";
+                    flag5 = true;
+                }
+            }
+            if (val >= 6 || val == 0) {
+                if (v6.value == "") {
+                    v6.style.borderColor = "red";
+                    flag6 = false;
+                }
+                else {
+                    v6.style.borderColor = "green";
+                    flag6 = true;
+                }
+            }
+
+            flag = flag1 && flag2 && flag3 && flag4 && flag5 && flag6;
+
+            return flag;
+        }</script>
+    <script type='text/javascript'>var myLink = document.querySelector('a[href="#"]');
+        myLink.addEventListener('click', function (e) {
+            e.preventDefault();
+        });</script>
+
+</body>
+
+</html>
