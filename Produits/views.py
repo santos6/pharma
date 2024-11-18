@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.urls import reverse_lazy
 
+from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView,UpdateView
 from .forms import AjoutProduit
 
 from django.contrib import messages
@@ -42,69 +43,101 @@ class AjoutProduits(CreateView):
     #redirection après enregistrement
     success_url = reverse_lazy('home')
 
+
+#class pour la modification
+class update_donnees(UpdateView):
+
+    #Récupération du model
+    model = Produits
+    #specifier le formulaire
+    form_class = AjoutProduit
+    #Précision du template
+    template_name= 'modification.html'
+    success_url = reverse_lazy('home')
+
+
+#Fonction pour supprimer
+
+def supprimer(request,id):
+    if request.method == "POST":
+        produit = get_object_or_404(Produits, id=id)
+        produit.delete()
+        return JsonResponse({'success':True, 'message':'Le produit a été supprimé avec succès'})
+    return JsonResponse ( {'success':False,'message':'Methode non autorisé'})
+
+
+
+    #fonction pour voir les details
+def detail(request,id):
+
+    n = Produits.objects.get(id=id)
+
+    return render (request,'detail.html ',{'n':n})
+
+
     #fonction pour modifier les donnees
 
-def modifier(request,id):
-    produit= get_object_or_404(Produits,id= id)
-    categories= Categories.objects.all()
-    errors = {}
+# def modifier(request,id):
+#     produit= get_object_or_404(Produits,id= id)
+#     categories= Categories.objects.all()
+#     errors = {}
 
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        category_id = request.POST.get('category')
-        price= request.POST.get('price')
-        quantite= request.POST.get('quantite')
-        description= request.POST.get('description')
-        date_expiration= request.POST.get('date_expiration')
-        image= request.FILES.get('image')
+#     if request.method == 'POST':
+#         name = request.POST.get('name')
+#         category_id = request.POST.get('category')
+#         price= request.POST.get('price')
+#         quantite= request.POST.get('quantite')
+#         description= request.POST.get('description')
+#         date_expiration= request.POST.get('date_expiration')
+#         image= request.FILES.get('image')
     
-        #validation des champs
+#         #validation des champs
 
-        if not name:
-            errors['name'] = "Le nom est requis"
+#         if not name:
+#             errors['name'] = "Le nom est requis"
 
-        if not category_id:
-            errors['category'] = "La categorie est requise"
+#         if not category_id:
+#             errors['category'] = "La categorie est requise"
 
-        if not price:
-            errors['price'] = "La prix est requise"
+#         if not price:
+#             errors['price'] = "La prix est requise"
 
-        if not quantite:
-            errors['quantite'] = "La quantite est requise"
+#         if not quantite:
+#             errors['quantite'] = "La quantite est requise"
 
-        if not description:
-            errors['description'] = "La description est requise"
+#         if not description:
+#             errors['description'] = "La description est requise"
 
-        if not date_expiration:
-            try:
-                datetime.strftime(date_expiration, '%Y-%m-%d')
-            except ValueError:
-                errors['date_expiration'] = "Le format de ladate d'expiration est incorect. Utilisez le format AAAA-MM-JJ"
+#         if not date_expiration:
+#             try:
+#                 datetime.strftime(date_expiration, '%Y-%m-%d')
+#             except ValueError:
+#                 errors['date_expiration'] = "Le format de ladate d'expiration est incorect. Utilisez le format AAAA-MM-JJ"
 
-        if not errors:
-            category = get_object_or_404(Categories, id=category_id)
-            produit.name = name
-            produit.category = category
-            produit.price = price
-            produit.quantite = quantite
-            produit.description = description
-            produit.date_expiration = date_expiration
+#         if not errors:
+#             category = get_object_or_404(Categories, id=category_id)
+#             produit.name = name
+#             produit.category = category
+#             produit.price = price
+#             produit.quantite = quantite
+#             produit.description = description
+#             produit.date_expiration = date_expiration
 
-            if image:
-                fs = FileSystemStorage()
-                filname= fs.save(name.name,image)
-                produit.image = fs.url(filname)
+#             if image:
+#                 fs = FileSystemStorage()
+#                 filname= fs.save(name.name,image)
+#                 produit.image = fs.url(filname)
             
         
-        produit.save()
-        messages.success(request,"Le produit a été modifié avec succès !")
-        return redirect("home")
+#         produit.save()
+#         messages.success(request,"Le produit a été modifié avec succès !")
+#         return redirect("home")
     
-    else:
-        for key, error in errors.items():
-            messages.error(request,error)
+#     else:
+#         for key, error in errors.items():
+#             messages.error(request,error)
 
-    return render (request,"modification.html",{'produit':produit, 'categories':categories, 'errors':errors})
+#     return render (request,"modification.html",{'produit':produit, 'categories':categories, 'errors':errors})
 
 
 

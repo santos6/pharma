@@ -93,7 +93,7 @@ class AjoutProduit(ModelForm):
                 'invalid' : 'Veuillez entrer la description '
             }
 
-            self.fields['data_expiration'].error_messages = {
+            self.fields['date_expiration'].error_messages = {
                 'required': 'La date est obligatoire',
                 'invalid' : 'Veuillez entrer une date '
             }
