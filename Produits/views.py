@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
-from django.views.generic import ListView, CreateView,UpdateView
+from django.views.generic import ListView, CreateView,UpdateView,DetailView
 from .forms import AjoutProduit
 
 from django.contrib import messages
@@ -22,7 +22,9 @@ def home(request):
    # }
 
    # return render(request,'home.html',context)
-    
+
+def Acc(request):
+    return render(request,'acc.html')
 
 class Affichage(ListView):
     # Affichage du template
@@ -73,6 +75,22 @@ def detail(request,id):
     n = Produits.objects.get(id=id)
 
     return render (request,'detail.html ',{'n':n})
+
+#class pour voir les détails d'un produit
+class edit(DetailView):
+    model= Produits
+    template_name= 'detail.html'
+    context_object_name= 'n'
+
+#fonction de recherche de produit
+def recherche(request):
+
+    query= request.GET.get('produit')
+    donnees= Produits.objects.filter(name__icontains= query)
+    context={
+        'donnees': donnees
+    }
+    return render(request, 'resultat_recherche.html',context)
 
 
     #fonction pour modifier les donnees

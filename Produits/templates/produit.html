@@ -85,7 +85,7 @@
         <span class="cell-label">Status:</span>
         <span class="status active"><button class="button {{n.statut_quantite}}"></button> {{n.quantite}}</span>
       </div>
-      <div class="product-cell sales"><span class="cell-label">Prix:</span>{{n.price}}</div>
+      <div class="product-cell sales"><span class="cell-label">Prix:</span>{{n.price}} Dhs</div>
       <div class="product-cell stock"><span class="cell-label">Description:</span>{{n.description}}</div>
       <div class="product-cell price"><span class="cell-label">Date Ajout:</span>{{n.date_ajout}}</div>
       <div class="product-cell price"><span class="cell-label">Date Expiration:</span>{{n.date_expiration}}</div>
@@ -95,7 +95,23 @@
 
         <a  class="btn btn-danger"><i class="bi bi-trash3 delete-button"  data-id="{{ n.id }}"></i></a>
 
-        <a href="" class="btn btn-primary"><i class="bi bi-info-circle"></i></a>
+        <div class="modal" id="successModal" tabindex="-1" role="dialog">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title"> Succès</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Fermer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="{% url 'detail' n.id %}" class="btn btn-primary"><i class="bi bi-info-circle"></i></a>
         
       </div>
       
