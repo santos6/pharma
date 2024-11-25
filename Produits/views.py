@@ -10,23 +10,17 @@ from .forms import AjoutProduit
 from django.contrib import messages
 from datetime import datetime
 
+
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+
 # La fonction 'home' permet d'afficher la page home.html
-def home(request):
-    return render(request,'home.html')
-
-    #Récupération des données dans la base de données
-   # donnees = Produits.objects.all()
-
-   # context= {
-   #     'donnees' :donnees
-   # }
-
-   # return render(request,'home.html',context)
-
+@login_required(login_url='login')
 def Acc(request):
     return render(request,'acc.html')
 
-class Affichage(ListView):
+
+class Affichage(LoginRequiredMixin, ListView):
     # Affichage du template
     template_name = 'home.html'
     #Récupération des données
@@ -35,7 +29,7 @@ class Affichage(ListView):
 
 #Class  d'ajoutdes données 
 
-class AjoutProduits(CreateView):
+class AjoutProduits(LoginRequiredMixin,CreateView):
     #utilisation du model
     model = Produits
     #Specifier le formulaire à utiliser 
@@ -47,7 +41,7 @@ class AjoutProduits(CreateView):
 
 
 #class pour la modification
-class update_donnees(UpdateView):
+class update_donnees(LoginRequiredMixin,UpdateView):
 
     #Récupération du model
     model = Produits
@@ -59,7 +53,7 @@ class update_donnees(UpdateView):
 
 
 #Fonction pour supprimer
-
+@login_required(login_url='login')
 def supprimer(request,id):
     if request.method == "POST":
         produit = get_object_or_404(Produits, id=id)
@@ -75,14 +69,15 @@ def detail(request,id):
     n = Produits.objects.get(id=id)
 
     return render (request,'detail.html ',{'n':n})
-
+ 
 #class pour voir les détails d'un produit
-class edit(DetailView):
+class edit(LoginRequiredMixin,DetailView):
     model= Produits
     template_name= 'detail.html'
     context_object_name= 'n'
 
 #fonction de recherche de produit
+@login_required(login_url='login')
 def recherche(request):
 
     query= request.GET.get('produit')
