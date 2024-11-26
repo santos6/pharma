@@ -30,8 +30,8 @@
 					<img src="{% static 'bjp/images/img-01.png' %}" alt="IMG">
 					<div class="container-login100-form-btn">
 					<p>
-						<a href="{% url 'login' %}" >
-							J'ai déjà mon compte
+						<a href="{% url 'creation' %}" >
+							Créez un compte ici
 						</a>
 					</p>
 		</div>	
@@ -49,30 +49,22 @@
 
     {% csrf_token %}
     <h3 class="login100-form-title">
-        Modification de mot de passe
+        Vérification de votre email
     </h3>
-
+    
 
 
     <div class="wrap-input100 validate-input">
-        <input class="input100" type="password" name="password" placeholder="Mot de passe">
+        <input class="input100" type="mail" name="email" placeholder="Votre adresse email">
         <span class="focus-input100"></span>
         <span class="symbol-input100">
-            <i class="fa fa-lock" aria-hidden="true"></i>
-        </span>
-    </div>
-
-    <div class="wrap-input100 validate-input">
-        <input class="input100" type="password" name="password_confirm" placeholder="Confirmation Mot de passe">
-        <span class="focus-input100"></span>
-        <span class="symbol-input100">
-            <i class="fa fa-lock" aria-hidden="true"></i>
+            <i class="fa fa-envelope" aria-hidden="true"></i>
         </span>
     </div>
 
     <div class="container-login100-form-btn">
         <button class="login100-form-btn">
-            Modifier
+            Vérifier
         </button>
     </div>
 
