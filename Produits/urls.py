@@ -17,4 +17,8 @@ urlpatterns = [
  # path('ajout/',ajout_donnees, name='ajout')
  path('recherche/',recherche,name='recherche'),
 
+ path('ajoutvente/<int:id>/',VenteProduits,name='ajoutvente'),
+ path('enregistrement-recu/<int:id>/',Saverecu,name='saverecu'),
+ path('facture/<int:sale_id>/',Facture,name='facture'),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

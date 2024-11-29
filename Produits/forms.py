@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from.models import Produits, Categories
+from.models import Produits, Categories,Vente
 from django import forms
 
 class AjoutProduit(ModelForm):
@@ -102,3 +102,44 @@ class AjoutProduit(ModelForm):
             #     'required': 'La date est obligatoire',
             #     'invalid' : 'Veuillez entrer une date '
             # }
+
+# Formulaire de vente
+
+class  AjoutVente(forms.ModelForm):
+
+    quantite = forms.IntegerField (
+         help_text = "Veuillez entrez la quantité du produit",
+        required = True
+    )
+
+    customer = forms.CharField(
+        help_text = "Veuillez entrez le nom du client",
+        required = True,
+        max_length=100
+    )
+       
+
+    class Meta:
+        model = Vente
+        fields = ['quantite', 'customer']
+
+        widgets = {
+            'customer': forms.TextInput(
+                attrs= {
+                    'placeholder':"Le nom du client",
+                    'class': 'forms-control'
+                }
+            ),
+
+            'quantite': forms.TextInput(
+                attrs= {
+                    'placeholder':"La quantité",
+                    'class': 'forms-control'
+                }
+            ),   
+        }
+            
+            
+        
+       
+    

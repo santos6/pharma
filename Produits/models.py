@@ -44,7 +44,8 @@ class Customer(models.Model):
 
 class Vente(models.Model):
     produit= models.ForeignKey(Produits, on_delete= models.CASCADE)
-    sale_date= models.DateTimeField(auto_created=True)
+    #sale_date= models.DateTimeField(auto_created=True)
+    sale_date= models.DateTimeField(auto_now_add=True)
     quantite= models.PositiveBigIntegerField()
     customer= models.CharField(max_length=100)
     total_amount= models.DecimalField(max_digits= 10, decimal_places=2)

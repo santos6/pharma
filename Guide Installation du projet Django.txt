@@ -1,0 +1,61 @@
+1. Prérequis
+-Python (version 3.10 ou supérieure) : Télécharger Python
+-Télécharger Git
+
+-----------------------
+2. Télécharger le projet
+
+Clonez le dépôt :
+git clone https://github.com/santos6/pharma
+
+Ou Téléchargez le fichier ZIP et extrayez-le dans un dossier local.
+
+-----------------------
+3. Créer et activer un environnement virtuel
+Accédez au répertoire du projet :
+
+
+cd pharma
+
+Créez un environnement virtuel :
+python -m venv VM
+
+Activez l'environnement virtuel (Sur Windows) :
+venv\Scripts\activate
+
+Vérifiez que l'environnement est activé :
+Vous devriez voir (VM) au début de la ligne de commande.
+
+--------------------------
+4. Configurer la base de données
+Appliquez les migrations pour configurer la base de données :
+
+python manage.py migrate
+
+
+----------------------------
+5. Créer un super utilisateur
+Créez un compte administrateur pour accéder à l'interface d'administration Django :
+
+
+python manage.py createsuperuser
+Saisissez un nom d'utilisateur, un email, et un mot de passe lorsqu'ils sont demandés.
+
+
+-----------------------------
+6. Lancer le serveur de développement
+Démarrez le serveur Django :
+
+
+python manage.py runserver
+Le serveur sera lancé sur http://127.0.0.1:8000/ (ou l'adresse affichée dans le terminal).
+
+-----------------------------
+7. Accéder au projet
+Ouvrez un navigateur web et accédez à :
+http://127.0.0.1:8000/
+
+Pour accéder à l'administration Django, aller sur :
+http://127.0.0.1:8000/admin/
+
+Connectez-vous avec le compte super utilisateur que vous avez créé.

@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{% static 'styleFacture.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap.min.css' %}">
+  <title>Tableau Facture</title>
+</head>
+<body>
+  <main>
+    
+    <h1 style="color: #2869ff;">PharmaPRO</h1>
+    <p>Gestion de Stock & Facturation</p>
+    
+    <h2 style="color: black">Facture De Phramacie</h2>
+    <p><time>Date & Heure :{{sale_date}} </time></p>
+    <table class="client">
+      <tr>
+        <th>Facture pour</th>
+        <th>N° de facture</th>
+      </tr>
+      <tr>
+        <td>{{customer}}</td>
+        <td>{{id}}</td>
+      </tr>
+        
+    </table>
+    <hr size="1">
+
+    <table class="description">
+      <tbody>
+        <tr>
+          <th>Produit acheter </th>
+          <th>Qté</th>
+          <th>Prix Unitaire</th>
+          <th>Montant total</th>
+        </tr>
+        <tr>
+
+          <td>{{produit}}</td>
+          <td> {{quantite}}</td>
+          <td> {{prix_unitaire}} Dh</td>
+          <td>{{total_amount}} Dh</td>
+        </tr>
+      </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="2">Remarque</td>
+            <td style="color: gray;">Les produits vendus ne sont ni échangés ni remboursés </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="color: gray;">Pour tout soucis, voir le vendeur.</td>
+          </tr>
+          <tr>
+            <td colspan="4">{{total_amount}} Dh</td>
+          </tr>
+        </tfoot>  
+      </table>
+  </main>
+  <button id="print-button" style="background-color: blue; color: aliceblue;">Imprimer</button>
+</body>
+<script>
+  document.getElementById("print-button").addEventListener("click", function() {
+      window.print();
+  });
+  </script>
+</html>

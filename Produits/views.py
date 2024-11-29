@@ -5,7 +5,7 @@ from django.urls import reverse_lazy
 from django.http import JsonResponse
 from django.core.files.storage import FileSystemStorage
 from django.views.generic import ListView, CreateView,UpdateView,DetailView
-from .forms import AjoutProduit
+from .forms import AjoutProduit, AjoutVente
 
 from django.contrib import messages
 from datetime import datetime
@@ -87,6 +87,94 @@ def recherche(request):
     }
     return render(request, 'resultat_recherche.html',context)
 
+
+#fonction poour la vente
+
+def VenteProduits(request,id):
+    produit = get_object_or_404(Produits,id=id)
+    message = None
+
+    if request.method == 'POST':
+        form = AjoutVente(request.POST)
+        
+        if form.is_valid():
+            quantite = form.cleaned_data['quantite']
+            customer = form.cleaned_data['customer']
+
+            if quantite > produit.quantite:
+                message ='La quantité demandée est supérieure à votre stock'
+            else:
+                customer = Customer.objects.get_or_create(name = customer)
+
+                total_amount = produit.price * quantite
+                
+                sale = Vente(produit = produit,quantite= quantite, total_amount = total_amount, customer = customer)
+                
+                
+                sale.save()
+
+                produit.quantite -= quantite
+
+                return redirect('facture',sale_id = sale.id)
+    else:
+        form = AjoutVente()
+
+        if produit.quantite <= 5 and not message:
+            message = 'Attention, le stock est bas !'
+        
+        context = {
+            'produit': produit,
+            'form': form,
+            'message': message
+        }
+    return render(request, 'formulaire-vente.html',context)
+
+#Fonction pour la reçu
+
+def Saverecu(request, id):
+
+    vente = get_object_or_404(Vente, id = id)
+    customer = vente.customer
+    quantite = vente.quantite
+    total_amount = vente.total_amount
+    produit = vente.produit
+
+    recu = Facture_Client(
+        customer = customer,
+        quantite = quantite,
+        total_amount = total_amount,
+        produit = produit
+    )
+
+    recu.save()
+    return redirect('facture', id = id)
+
+#Fonction pour la facture
+def Facture(request, sale_id):
+
+    sale = get_object_or_404(Vente, id = sale_id)
+    
+    customer = sale.customer
+    produit = sale.produit
+    quantite = sale.quantite
+    
+    price = sale.produit.price,
+    sale_date = sale.sale_date
+    total_amount = sale.total_amount
+    
+
+    context = {
+        'sale': sale,
+        'customer' : customer,
+        'produit' : produit,
+        'quantite' : quantite,
+        'sale_date' : sale_date,
+        'id' : sale.id,
+        'prix_unitaire' : produit.price,
+        'total_amount' : total_amount,
+    }
+
+    return render (request, 'facture-client.html', context)
 
     #fonction pour modifier les donnees
 
